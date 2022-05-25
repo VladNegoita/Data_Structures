@@ -1,9 +1,15 @@
+// Copyright 2022 311CA Vlad Negoita <vlad1negoita@gmail.com>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "aint.h"
 
-void *aint_querry(aint *arb, int node, int a, int b, int l, int r)
+/*
+ * query on the segment: [a, b]
+ * current segment: [l, r]
+ */
+void *aint_query(aint *arb, int node, int a, int b, int l, int r)
 {
 	if (a <= l && b >= r)
 		return (char *)arb->arr + node * arb->data_size;
@@ -12,10 +18,10 @@ void *aint_querry(aint *arb, int node, int a, int b, int l, int r)
 	int m = (l + r) / 2;
 
 	if (a <= m)
-		aux1 = aint_querry(arb, node * 2, a, b, l, m);
+		aux1 = aint_query(arb, node * 2, a, b, l, m);
 
 	if (b >= m + 1)
-		aux2 = aint_querry(arb, node * 2 + 1, a, b, m + 1, r);
+		aux2 = aint_query(arb, node * 2 + 1, a, b, m + 1, r);
 
 	if (aux1 && aux2)
 		return arb->aint_merge(aux1, aux2);
@@ -26,6 +32,10 @@ void *aint_querry(aint *arb, int node, int a, int b, int l, int r)
 	return aux2;
 }
 
+/*
+ * update the element at the specified position with the desired value
+ * current segment: [l, r]
+ */
 void aint_update(aint *arb, int position, int node, void *value, int l, int r)
 {
 	if (l == r) {
@@ -42,6 +52,9 @@ void aint_update(aint *arb, int position, int node, void *value, int l, int r)
 	}
 }
 
+/*
+ * creates an aint and returns it
+ */
 aint *aint_init(int size, int data_size, void *value, void *(*aint_merge)(void *, void *))
 {
 	aint *arb = (aint *)malloc(sizeof(aint));
@@ -56,6 +69,11 @@ aint *aint_init(int size, int data_size, void *value, void *(*aint_merge)(void *
 	return arb;
 }
 
+
+/*
+ * prints the aint in a basic form
+ * good for tutorial (and debugging) =)))
+ */
 void aint_print(aint *arb, int l, int r, int node)
 {
 	if (l == r) {
@@ -67,6 +85,9 @@ void aint_print(aint *arb, int l, int r, int node)
 	}
 }
 
+/*
+ * frees the memory of the aint
+ */
 void aint_free(aint **arb)
 {
 	free((*arb)->arr);
