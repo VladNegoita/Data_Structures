@@ -1,4 +1,5 @@
-# Data_Structures
+# Data_Structures<br />
+
 Skiplist
 The skiplist is a data structure based on probabilities. It allows a search complexity and insertion complexity of O(log N) in a sorted skiplist.
 In consequence it provides better advantages complexity-wise over clasicall linked lists and aloso over arrays.
