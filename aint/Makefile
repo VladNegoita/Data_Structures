@@ -15,7 +15,7 @@ OBJ=aint.o main.o
 
 build: $(TARGETS)
 
-aint_exec: $(OBJ)
+aint: $(OBJ)
 	$(CC) $(CFLAGS) *.o -o aint_exec
 
 %.o: %.c $(DEPS)
